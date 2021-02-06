@@ -74,4 +74,8 @@ function HaversineDestination(p, θ, d)
     return [λ2, ϕ2]
 end
 
+export HaversineDistance
+export HaversineBearing
+export HaversineDestination
+
 end
