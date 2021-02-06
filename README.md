@@ -1,13 +1,15 @@
-# Haversine
+# Haversine.jl
 
 [![Build Status](https://travis-ci.com/techshot25/Haversine.svg?branch=master)](https://travis-ci.com/techshot25/Haversine)
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/techshot25/Haversine?svg=true)](https://ci.appveyor.com/project/techshot25/Haversine)
 [![Coverage](https://codecov.io/gh/techshot25/Haversine/branch/master/graph/badge.svg)](https://codecov.io/gh/techshot25/Haversine)
 [![Coverage](https://coveralls.io/repos/github/techshot25/Haversine/badge.svg?branch=master)](https://coveralls.io/github/techshot25/Haversine?branch=master)
 
+---
+
 Haversine (Great Circle) distance tools for Julia
 
-There are a few functions here to help
+This project contains helper geospatial tools using [Haversine](https://en.wikipedia.org/wiki/Haversine_formula) which assume a perfectly spherical earth to compute special geospatial functions. All the functions included are using pairwise distance and will require mapping to work on arrays. Contributions are welcome, submit a PR and I will review it as soon as I can.
 
 ### HaversineDistance
 This uses the great circle distance to find the approximate distance between two coordinates assuming a perfectly spherical earth
@@ -48,7 +50,7 @@ theta = 30 # heading in degrees
 d = 2 # distance in meters
 
 # returns destination coordinates as Array[lon, lat]
-HaversineDestination([1, 2], 30, 2)
+HaversineDestination(p, theta, d)
 >>> 2-element Array{Float64,1}:
 >>> 1.0000089986979082
 >>> 2.000015576707113
