@@ -112,17 +112,4 @@ end
 
 export HaversineDistance, HaversineBearing, HaversineDestination
 
-p1 = [[1, 2], [3, 4], [0, 9]]
-p2 = [[5, 1], [0, 9], [12, 4]]
-
-p = [5, 4]
-
-θ = [30, 60]
-d = 900000
-
-println(HaversineDistance(p1, p2))
-println(HaversineBearing(p1, p2))
-println(HaversineDestination(p, θ, d))
-
-
 end
