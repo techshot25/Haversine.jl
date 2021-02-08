@@ -47,7 +47,12 @@ function HaversineDistance(p1, p2)
     Float64 or Array{Float64}
         Haversine distance between points in meters
     =#
-    (λ1, ϕ1), (λ2, ϕ2) = p1, p2
+    p1, p2 = reduce(hcat, p1), reduce(hcat, p2)
+    if size(p1)[1] == 1
+        (λ1, ϕ1), (λ2, ϕ2) = p1, p2
+    else
+        (λ1, ϕ1), (λ2, ϕ2) = (p1[1, :], p1[2, :]), (p2[1, :], p2[2, :])
+    end
     return broadcast((λ1, ϕ1, λ2, ϕ2) -> BaseHaversineDistance(λ1, ϕ1, λ2, ϕ2), λ1, ϕ1, λ2, ϕ2)
 end
 
@@ -68,7 +73,12 @@ function HaversineBearing(p1, p2)
     Float64 or Array{Float64}
         The heading in degrees
     =#
-    (λ1, ϕ1), (λ2, ϕ2) = p1, p2
+    p1, p2 = reduce(hcat, p1), reduce(hcat, p2)
+    if size(p1)[1] == 1
+        (λ1, ϕ1), (λ2, ϕ2) = p1, p2
+    else
+        (λ1, ϕ1), (λ2, ϕ2) = (p1[1, :], p1[2, :]), (p2[1, :], p2[2, :])
+    end
     return broadcast((λ1, ϕ1, λ2, ϕ2) -> BaseHaversineBearing(λ1, ϕ1, λ2, ϕ2), λ1, ϕ1, λ2, ϕ2)
 end
 
@@ -91,10 +101,28 @@ function HaversineDestination(p, θ, d)
     Array[Float, Float]
         The destination point coordinates in degrees
     =#
-    λ1, ϕ1 = p
+    p = reduce(hcat, p)
+    if size(p)[1] == 1
+        λ1, ϕ1 = p
+    else
+        λ1, ϕ1 = p[1, :], p[2, :]
+    end
     return broadcast((λ1, ϕ1, θ, d) -> BaseHaversineDestination(λ1, ϕ1, θ, d), λ1, ϕ1, θ, d)
 end
 
 export HaversineDistance, HaversineBearing, HaversineDestination
+
+p1 = [[1, 2], [3, 4], [0, 9]]
+p2 = [[5, 1], [0, 9], [12, 4]]
+
+p = [5, 4]
+
+θ = [30, 60]
+d = 900000
+
+println(HaversineDistance(p1, p2))
+println(HaversineBearing(p1, p2))
+println(HaversineDestination(p, θ, d))
+
 
 end

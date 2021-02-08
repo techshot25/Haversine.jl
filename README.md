@@ -46,7 +46,7 @@ Given a point, bearing, and distance, show the coordinates of the final destinat
 using Haversine
 
 p = [1, 2] # (lon, lat) in degrees
-theta = 30 # heading in degrees
+θ = 30 # heading in degrees
 d = 2 # distance in meters
 
 # returns destination coordinates as Array[lon, lat]
