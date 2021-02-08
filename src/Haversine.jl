@@ -1,24 +1,10 @@
 module Haversine
 
-R = 6.371e6 # earth's average radius in meters
+R = 6.371e6 # earth's volumetric mean radius in meters
 
 
-function HaversineDistance(p1, p2)
-    """Get the haversine distance between two points
-
-    Parameters
-    ----------
-    p1 : Array-like[Float]
-        First point in degrees (lon, lat)
-    p2 : Array-like[Float]
-        Second point in degrees (lon, lat)
-
-    Returns
-    -------
-    Float
-        Haversine distance between points
-    """
-    (λ1, ϕ1), (λ2, ϕ2) = p1, p2
+function BaseHaversineDistance(λ1::Number, ϕ1::Number, λ2::Number, ϕ2::Number)::Float64
+    # Elementwise implementation of HaversineDistance
     Δϕ = ϕ2 - ϕ1
     Δλ = λ2 - λ1
     a = sind(Δϕ / 2)^2 + cosd(ϕ1) * cosd(ϕ2) * sind(Δλ / 2)^2
@@ -27,22 +13,8 @@ function HaversineDistance(p1, p2)
 end
 
 
-function HaversineBearing(p1, p2)
-    """Find the heading from point 1 to point 2
-    
-    Parameters
-    ----------
-    p1 : Array-like[Float]
-        First point coordinates in degrees (lon, lat)
-    p2 : Array-like[Float]
-        Second point coordinates in degrees (lon, lat)
-
-    Returns
-    -------
-    Float
-        The heading in degrees
-    """
-    (λ1, ϕ1), (λ2, ϕ2) = p1, p2
+function BaseHaversineBearing(λ1::Number, ϕ1::Number, λ2::Number, ϕ2::Number)::Float64
+    # Elementwise implementation of HaversineBearing
     Δϕ = ϕ2 - ϕ1
     Δλ = λ2 - λ1
     θ = atand(sind(Δλ) * cosd(ϕ2), cosd(ϕ1) * sind(ϕ2) - sind(ϕ1) * cosd(ϕ2) * cosd(Δλ))
@@ -50,32 +22,79 @@ function HaversineBearing(p1, p2)
 end
 
 
-function HaversineDestination(p, θ, d)
-    """Find the destination coordinates given a starting point
-    
-    Parameters
-    ----------
-    p : Array-like[Float]
-        Initial coordinates in degrees (lon, lat)
-    θ : Float
-        Heading in degrees
-    d : Float
-        Distance in meters
-
-    Returns
-    -------
-    Array[Float, Float]
-        The destination point coordinates in degrees
-    """
-    λ1, ϕ1 = p
+function BaseHaversineDestination(λ1::Number, ϕ1::Number, θ::Number, d::Number)::Array{Float64}
+    # Elementwise implementation of HaversineDestination
     δ = d / R
     ϕ2 = asind(sind(ϕ1) * cos(δ) + cosd(ϕ1) * sin(δ) * cosd(θ))
     λ2 = λ1 + atand(sind(θ) * sin(δ) * cosd(ϕ1), cos(δ) - sind(ϕ1) * sind(ϕ2))
     return [λ2, ϕ2]
 end
 
-export HaversineDistance
-export HaversineBearing
-export HaversineDestination
+
+function HaversineDistance(p1, p2)
+    #=
+    Get the haversine distance between two points
+
+    Parameters
+    ----------
+    p1 : Array-like[Number] or nested array of multiple points
+        First point in degrees (lon, lat)
+    p2 : Array-like[Number] or nested array of multiple points
+        Second point in degrees (lon, lat)
+
+    Returns
+    -------
+    Float64 or Array{Float64}
+        Haversine distance between points in meters
+    =#
+    (λ1, ϕ1), (λ2, ϕ2) = p1, p2
+    return broadcast((λ1, ϕ1, λ2, ϕ2) -> BaseHaversineDistance(λ1, ϕ1, λ2, ϕ2), λ1, ϕ1, λ2, ϕ2)
+end
+
+
+function HaversineBearing(p1, p2)
+    #=
+    Find the heading from point 1 to point 2
+    
+    Parameters
+    ----------
+    p1 : Array-like[Number] or nested array of multiple points
+        First point coordinates in degrees (lon, lat)
+    p2 : Array-like[Number] or nested array of multiple points
+        Second point coordinates in degrees (lon, lat)
+
+    Returns
+    -------
+    Float64 or Array{Float64}
+        The heading in degrees
+    =#
+    (λ1, ϕ1), (λ2, ϕ2) = p1, p2
+    return broadcast((λ1, ϕ1, λ2, ϕ2) -> BaseHaversineBearing(λ1, ϕ1, λ2, ϕ2), λ1, ϕ1, λ2, ϕ2)
+end
+
+
+function HaversineDestination(p, θ, d)
+    #=
+    Find the destination coordinates given a starting point
+    
+    Parameters
+    ----------
+    p : Array-like[Number] or nested array of multiple points
+        Initial coordinates in degrees (lon, lat)
+    θ : Number or Array-like{Number}
+        Heading in degrees
+    d : Number or Array-like{Number}
+        Distance in meters
+
+    Returns
+    -------
+    Array[Float, Float]
+        The destination point coordinates in degrees
+    =#
+    λ1, ϕ1 = p
+    return broadcast((λ1, ϕ1, θ, d) -> BaseHaversineDestination(λ1, ϕ1, θ, d), λ1, ϕ1, θ, d)
+end
+
+export HaversineDistance, HaversineBearing, HaversineDestination
 
 end
