@@ -1,9 +1,9 @@
 # Haversine.jl
 
 [![Build Status](https://travis-ci.com/techshot25/Haversine.jl.svg?branch=master)](https://travis-ci.com/techshot25/Haversine.jl)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/techshot25/Haversine?svg=true)](https://ci.appveyor.com/project/techshot25/Haversine)
+[![Build status](https://ci.appveyor.com/api/projects/status/r28nu7ghasrwgwcj?svg=true)](https://ci.appveyor.com/project/techshot25/haversine-jl)
 [![codecov](https://codecov.io/gh/techshot25/Haversine.jl/branch/master/graph/badge.svg?token=W0VM6KD0CW)](https://codecov.io/gh/techshot25/Haversine.jl)
-[![Coverage](https://coveralls.io/repos/github/techshot25/Haversine/badge.svg?branch=master)](https://coveralls.io/github/techshot25/Haversine?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/techshot25/Haversine.jl/badge.svg?branch=master)](https://coveralls.io/github/techshot25/Haversine.jl?branch=master)
 
 ---
 
