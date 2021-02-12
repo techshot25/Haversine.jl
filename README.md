@@ -57,7 +57,7 @@ HaversineDestination(p, θ, d)
 ```
 
 ### Broadcasting
-All functions as of version 0.2 can now support broadcasting. Arguments can broadcast to support array-like inputs
+All functions as of version 1.0.0 can now support broadcasting. Arguments can broadcast to support array-like inputs
 
 ```julia
 using Haversine
