@@ -3,6 +3,12 @@ module Haversine
 R = 6.371e6 # earth's volumetric mean radius in meters
 
 
+struct GeoLocation
+    ϕ::Real
+    λ::Real
+end
+
+
 function BaseHaversineDistance(λ1::Number, ϕ1::Number, λ2::Number, ϕ2::Number)::Float64
     # Elementwise implementation of HaversineDistance
     Δϕ = ϕ2 - ϕ1
@@ -57,6 +63,12 @@ function HaversineDistance(p1, p2)
 end
 
 
+function HaversineDistance(p1::AbstractArray{GeoLocation}, p2::AbstractArray{GeoLocation})::Array{Float64}
+    (λ1, ϕ1), (λ2, ϕ2) = transpose([[x.λ, x.ϕ] for x in p1]), transpose([[x.λ, x.ϕ] for x in p2])
+    return broadcast((λ1, ϕ1, λ2, ϕ2) -> BaseHaversineDistance(λ1, ϕ1, λ2, ϕ2), λ1, ϕ1, λ2, ϕ2)
+end
+
+
 function HaversineBearing(p1, p2)
     #=
     Find the heading from point 1 to point 2
@@ -79,6 +91,12 @@ function HaversineBearing(p1, p2)
     else
         (λ1, ϕ1), (λ2, ϕ2) = (p1[1, :], p1[2, :]), (p2[1, :], p2[2, :])
     end
+    return broadcast((λ1, ϕ1, λ2, ϕ2) -> BaseHaversineBearing(λ1, ϕ1, λ2, ϕ2), λ1, ϕ1, λ2, ϕ2)
+end
+
+
+function HaversineBearing(p1::AbstractArray{GeoLocation}, p2::AbstractArray{GeoLocation})::Array{Float64}
+    (λ1, ϕ1), (λ2, ϕ2) = transpose([[x.λ, x.ϕ] for x in p1]), transpose([[x.λ, x.ϕ] for x in p2])
     return broadcast((λ1, ϕ1, λ2, ϕ2) -> BaseHaversineBearing(λ1, ϕ1, λ2, ϕ2), λ1, ϕ1, λ2, ϕ2)
 end
 
@@ -110,6 +128,12 @@ function HaversineDestination(p, θ, d)
     return broadcast((λ1, ϕ1, θ, d) -> BaseHaversineDestination(λ1, ϕ1, θ, d), λ1, ϕ1, θ, d)
 end
 
-export HaversineDistance, HaversineBearing, HaversineDestination
+
+function HaversineDestination(p::AbstractArray{GeoLocation}, θ, d)::Array{Float64}
+    λ1, ϕ1 = transpose([[x.λ, x.ϕ] for x in p])
+    return broadcast((λ1, ϕ1, θ, d) -> BaseHaversineDestination(λ1, ϕ1, θ, d), λ1, ϕ1, θ, d)
+end
+
+export GeoLocation, HaversineDistance, HaversineBearing, HaversineDestination
 
 end

@@ -17,6 +17,9 @@ p1 = [[1, 2], [3, 4], [0, 9]]
 p2 = [[5, 1], [0, 9], [12, 4]]
 θ = [30, 60]
 
+geo_p1 = [GeoLocation(1, 2), GeoLocation(3, 4), GeoLocation(0, 9)]
+geo_p1 = [GeoLocation(5, 1), GeoLocation(0, 9), GeoLocation(12, 4)]
+
 distances = [458315.02, 647215.42, 1.44e6]
 bearings = [103.98, -30.645, 111.99]
 destinations = [[9.11, 10.99], [12.07, 8.01]]
@@ -29,4 +32,8 @@ destinations = [[9.11, 10.99], [12.07, 8.01]]
     @test isapprox(HaversineDistance(p1, p2), distances, rtol=0.01)
     @test isapprox(HaversineBearing(p1, p2), bearings, rtol=0.01)
     @test isapprox(HaversineDestination(p, θ, d), destinations, rtol=0.01)
+
+    @test isapprox(HaversineDistance(geo_p1, geo_p2), distances, rtol=0.01)
+    @test isapprox(HaversineBearing(geo_p1, geo_p2), bearings, rtol=0.01)
+    @test isapprox(HaversineDestination(geo_p1, θ, d), destinations, rtol=0.01)
 end
