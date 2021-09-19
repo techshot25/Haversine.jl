@@ -63,7 +63,7 @@ function HaversineDistance(p1, p2)
 end
 
 
-function HaversineDistance(p1::AbstractArray{GeoLocation}, p2::AbstractArray{GeoLocation})::Array{Float64}
+function HaversineDistance(p1::AbstractArray{GeoLocation}, p2::AbstractArray{GeoLocation})::AbstractArray{Float64}
     (λ1, ϕ1), (λ2, ϕ2) = transpose([[x.λ, x.ϕ] for x in p1]), transpose([[x.λ, x.ϕ] for x in p2])
     return broadcast((λ1, ϕ1, λ2, ϕ2) -> BaseHaversineDistance(λ1, ϕ1, λ2, ϕ2), λ1, ϕ1, λ2, ϕ2)
 end
@@ -95,7 +95,7 @@ function HaversineBearing(p1, p2)
 end
 
 
-function HaversineBearing(p1::AbstractArray{GeoLocation}, p2::AbstractArray{GeoLocation})::Array{Float64}
+function HaversineBearing(p1::AbstractArray{GeoLocation}, p2::AbstractArray{GeoLocation})::AbstractArray{Float64}
     (λ1, ϕ1), (λ2, ϕ2) = transpose([[x.λ, x.ϕ] for x in p1]), transpose([[x.λ, x.ϕ] for x in p2])
     return broadcast((λ1, ϕ1, λ2, ϕ2) -> BaseHaversineBearing(λ1, ϕ1, λ2, ϕ2), λ1, ϕ1, λ2, ϕ2)
 end
@@ -129,9 +129,9 @@ function HaversineDestination(p, θ, d)
 end
 
 
-function HaversineDestination(p::AbstractArray{GeoLocation}, θ, d)::Array{Float64}
+function HaversineDestination(p::AbstractArray{GeoLocation}, θ, d)::Vector{Float64}
     λ1, ϕ1 = transpose([[x.λ, x.ϕ] for x in p])
-    return broadcast((λ1, ϕ1, θ, d) -> BaseHaversineDestination(λ1, ϕ1, θ, d), λ1, ϕ1, θ, d)
+    return copy(broadcast((λ1, ϕ1, θ, d) -> BaseHaversineDestination(λ1, ϕ1, θ, d), λ1, ϕ1, θ, d))
 end
 
 export GeoLocation, HaversineDistance, HaversineBearing, HaversineDestination

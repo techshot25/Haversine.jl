@@ -1,7 +1,7 @@
 name = "Haversine"
 uuid = "5360f785-287a-47c2-b373-25ddc8e348fa"
 authors = ["Ali Shannon"]
-version = "1.0.0"
+version = "1.1.0"
 
 [compat]
 julia = "1"
