@@ -22,13 +22,13 @@ geo_p2 = [GeoLocation(5, 1), GeoLocation(0, 9), GeoLocation(12, 4)]
 
 distances = [458315.02, 647215.42, 1.44e6]
 bearings = [103.98, -30.645, 111.99]
-destinations = [[8.85, 0.032], [-1.19, 10.95], [7.54, 5.90]]
+destinations = [[12.86, 2.01], [0.81, 10.95], [12.50, 0.94]]
+destinations2 = [[8.85, 0.032], [-1.19, 10.95], [7.54, 5.90]]
 
 computed_geo_dest = HaversineDestination(p, single_θ, d)
 computed_dest = [computed_geo_dest.λ, computed_geo_dest.ϕ]
-computed_dests = [[x.λ, x.ϕ] for x in HaversineDestination(geo_p1, bearings, d)]
-
-println(computed_dests)
+computed_dests = [[x.λ, x.ϕ] for x in HaversineDestination(p, bearings, d)]
+computed_dests2 = [[x.λ, x.ϕ] for x in HaversineDestination(geo_p1, bearings, d)]
 
 @testset "Haversine.jl" begin
     @test isapprox(HaversineDistance(single_p1, single_p2), distance, rtol=0.01)
@@ -41,4 +41,5 @@ println(computed_dests)
 
     @test isapprox(HaversineDistance(geo_p1, geo_p2), distances, rtol=0.01)
     @test isapprox(HaversineBearing(geo_p1, geo_p2), bearings, rtol=0.01)
+    @test isapprox(computed_dests2, destinations2, rtol=0.01)
 end

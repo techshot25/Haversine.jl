@@ -11,9 +11,7 @@ R = 6.371e6 # earth's volumetric mean radius in meters
 end
 
 
-
-
-function HaversineDistance(p1::GeoLocation, p2::GeoLocation)
+function HaversineDistance(p1::GeoLocation, p2::GeoLocation)::Float64
     λ1, ϕ1 = p1.λ, p1.ϕ
     λ2, ϕ2 = p2.λ, p2.ϕ
     Δϕ = ϕ2 - ϕ1
@@ -42,20 +40,23 @@ function HaversineDestination(geopoint::GeoLocation, θ::Real, d::Real)::GeoLoca
 end
 
 
-function HaversineDistance(p1::AbstractArray{GeoLocation}, p2::AbstractArray{GeoLocation})::AbstractArray{Float64}
+function HaversineDistance(p1::AbstractArray{GeoLocation}, p2::AbstractArray{GeoLocation})::Vector{Float64}
     return map(HaversineDistance, p1, p2)
 end
 
 
-function HaversineBearing(p1::AbstractArray{GeoLocation}, p2::AbstractArray{GeoLocation})::AbstractArray{Float64}
+function HaversineBearing(p1::AbstractArray{GeoLocation}, p2::AbstractArray{GeoLocation})::Vector{Float64}
     return map(HaversineBearing, p1, p2)
 end
 
 function HaversineDestination(
-        p::AbstractArray{GeoLocation},
+        p::Union{AbstractArray, GeoLocation},
         θ::Union{AbstractArray, Real}, 
         d::Union{AbstractArray, Real}
     )::Vector{GeoLocation}
+    if isa(p, GeoLocation)
+        return broadcast((y, z) -> HaversineDestination(p, y, z), θ, d)
+    end
     return broadcast((x, y, z) -> HaversineDestination(x, y, z), p, θ, d)
 end
 
