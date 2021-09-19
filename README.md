@@ -1,9 +1,7 @@
 # Haversine.jl
 
-[![Build Status](https://travis-ci.com/techshot25/Haversine.jl.svg?branch=master)](https://travis-ci.com/techshot25/Haversine.jl)
 [![Build status](https://ci.appveyor.com/api/projects/status/r28nu7ghasrwgwcj?svg=true)](https://ci.appveyor.com/project/techshot25/haversine-jl)
 [![codecov](https://codecov.io/gh/techshot25/Haversine.jl/branch/master/graph/badge.svg?token=W0VM6KD0CW)](https://codecov.io/gh/techshot25/Haversine.jl)
-[![Coverage Status](https://coveralls.io/repos/github/techshot25/Haversine.jl/badge.svg?branch=master)](https://coveralls.io/github/techshot25/Haversine.jl?branch=master)
 
 ---
 
@@ -17,8 +15,10 @@ This uses the great circle distance to find the approximate distance between two
 ```julia
 using Haversine
 
-p1 = [1, 2] # (lon, lat) in degrees
-p2 = [3, 4]
+
+
+p1 = GeoLocation(lon=1, lat=2)
+p2 = GeoLocation(3, 4) # (lon, lat) in degrees
 
 # returns distance in meters
 HaversineDistance(p1, p2)
