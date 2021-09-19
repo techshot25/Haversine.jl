@@ -15,8 +15,6 @@ This uses the great circle distance to find the approximate distance between two
 ```julia
 using Haversine
 
-
-
 p1 = GeoLocation(λ=1, ϕ=2)
 p2 = GeoLocation(3, 4) # (lon, lat) in degrees
 
