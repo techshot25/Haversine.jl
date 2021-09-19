@@ -1,9 +1,7 @@
 # Haversine.jl
 
-[![Build Status](https://travis-ci.com/techshot25/Haversine.jl.svg?branch=master)](https://travis-ci.com/techshot25/Haversine.jl)
 [![Build status](https://ci.appveyor.com/api/projects/status/r28nu7ghasrwgwcj?svg=true)](https://ci.appveyor.com/project/techshot25/haversine-jl)
 [![codecov](https://codecov.io/gh/techshot25/Haversine.jl/branch/master/graph/badge.svg?token=W0VM6KD0CW)](https://codecov.io/gh/techshot25/Haversine.jl)
-[![Coverage Status](https://coveralls.io/repos/github/techshot25/Haversine.jl/badge.svg?branch=master)](https://coveralls.io/github/techshot25/Haversine.jl?branch=master)
 
 ---
 
@@ -17,8 +15,10 @@ This uses the great circle distance to find the approximate distance between two
 ```julia
 using Haversine
 
-p1 = [1, 2] # (lon, lat) in degrees
-p2 = [3, 4]
+
+
+p1 = GeoLocation(λ=1, ϕ=2)
+p2 = GeoLocation(3, 4) # (lon, lat) in degrees
 
 # returns distance in meters
 HaversineDistance(p1, p2)
@@ -31,8 +31,8 @@ This returns the bearing/heading between from point 1 to point 2 in degrees
 ```julia
 using Haversine
 
-p1 = [1, 2] # (lon, lat) in degrees
-p2 = [3, 4]
+p1 = GeoLocation(λ=1, ϕ=2)
+p2 = GeoLocation(3, 4)
 
 # returns heading in degrees
 HaversineBearing(p1, p2)
@@ -62,24 +62,24 @@ All functions as of version 1.0.0 can now support broadcasting. Arguments can br
 ```julia
 using Haversine
 
-p = [5, 4] # initial location
+p = GeoLocation(5, 4) # initial location
 θ = [30, 60] # multiple headings
 d = [10, 900000] # destination for each heading
 
 HaversineDestination(p, θ, d)
->>> 2-element Array{Array{Float64,1},1}:
->>>  [5.000045075887166, 4.0000778835344555]
->>>  [12.072951161820168, 8.006647216172182]
+>>> 2-element Vector{GeoLocation}:
+>>>  GeoLocation(5.000045075887166, 4.0000778835344555)
+>>>  GeoLocation(12.072951161820168, 8.006647216172182
 ```
 
 ```julia
 using Haversine
 
-p1 = [[1, 2], [3, 4]] # multiple points
-p2 = [[5, 1], [0, 9]]
+p1 = [GeoLocation(1, 2), GeoLocation(3, 4)] # multiple points
+p2 = [GeoLocation(5, 1), GeoLocation(0, 9)]
 
 HaversineBearing(p1, p2)
 >>> 2-element Array{Float64,1}:
->>>  126.81261556373533
->>>  -11.186184406292147
+>>>  103.98283865771535
+>>>  -30.644744331249175
 ```
